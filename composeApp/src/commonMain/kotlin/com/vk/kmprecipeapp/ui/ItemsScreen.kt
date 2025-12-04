@@ -44,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -88,9 +89,8 @@ import org.jetbrains.compose.resources.painterResource
 
 
         LaunchedEffect(Unit) {
-            viewModel.loadItems()
+//            viewModel.loadItems()
             viewModel.getRecipesData()
-            println("Recipe data  "+viewModel.stateRecipes.value)
         }
 
     LogOutDialog(
@@ -132,6 +132,7 @@ import org.jetbrains.compose.resources.painterResource
                         KamelImage(
                             resource = asyncPainterResource(profilePic),
                             contentDescription = "Profile",
+                            contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .wrapContentWidth()
                                 .padding(10.dp)
@@ -211,6 +212,7 @@ import org.jetbrains.compose.resources.painterResource
                                 KamelImage(
                                     resource = asyncPainterResource(profilePic),
                                     contentDescription = "Profile",
+                                    contentScale = ContentScale.Crop,
                                     modifier = Modifier
                                         .wrapContentWidth()
 
@@ -304,9 +306,6 @@ import org.jetbrains.compose.resources.painterResource
                         modifier = Modifier
                             .wrapContentWidth()
                     )
-
-                    println("url ${item.image}")
-
                 }
             }
             Text(
@@ -322,84 +321,6 @@ import org.jetbrains.compose.resources.painterResource
 
     }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AppDrawer() {
-
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
-
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            ModalDrawerSheet {
-                Spacer(Modifier.height(24.dp))
-                Text(
-                    "Menu",
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(16.dp)
-                )
-
-                NavigationDrawerItem(
-                    label = { Text("Home") },
-                    selected = false,
-                    onClick = {
-                        scope.launch { drawerState.close() }
-                    }
-                )
-
-                NavigationDrawerItem(
-                    label = { Text("Profile") },
-                    selected = false,
-                    onClick = {
-                        scope.launch { drawerState.close() }
-                    }
-                )
-
-                NavigationDrawerItem(
-                    label = { Text("Logout") },
-                    selected = false,
-                    onClick = {
-                        scope.launch { drawerState.close() }
-                    }
-                )
-            }
-        }
-    ) {
-
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("KMP Drawer") },
-                    navigationIcon = {
-                        IconButton(
-                            onClick = {
-                                scope.launch { drawerState.open() }
-                            }
-                        ) {
-                            Image(
-                                painter = painterResource(Res.drawable.menu),
-                                contentDescription = "Menu",
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .size(24.dp)
-                                )
-                        }
-                    }
-                )
-            }
-        ) { padding ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-            ) {
-                Text("Home Screen", modifier = Modifier.padding(16.dp))
-            }
-        }
-
-    }
-}
 
 
 

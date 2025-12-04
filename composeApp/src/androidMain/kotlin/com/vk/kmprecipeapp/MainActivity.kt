@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.vk.kmprecipeapp.ui.AppScreen
 import com.vk.kmprecipeapp.ui.ProfileScreen
@@ -44,5 +45,5 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppAndroidPreview() {
     val navController = rememberNavController()
-    ProfileScreen( navController = navController)
+    ProfileScreen(navController = navController, viewModel = viewModel())
 }

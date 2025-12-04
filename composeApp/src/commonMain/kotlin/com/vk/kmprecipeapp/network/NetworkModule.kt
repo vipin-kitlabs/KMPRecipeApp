@@ -25,8 +25,8 @@ object NetworkModule {
 
                     }
                 }
-                logger = Logger.DEFAULT
                 level = LogLevel.HEADERS
+                level = LogLevel.INFO
 
             }
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vk.kmprecipeapp.data.ItemRepository
 import com.vk.kmprecipeapp.model.FoodDataResponse
+import com.vk.kmprecipeapp.model.ImageResponse
 import com.vk.kmprecipeapp.model.LoginRequest
 import com.vk.kmprecipeapp.model.LoginResponse
 import com.vk.kmprecipeapp.model.Recipe
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class ItemsState(
-    val items: FoodDataResponse = FoodDataResponse(emptyList()),
+    val items: Any? = null,
     val isLoading: Boolean = false,
     val error: String? = null
 )
@@ -31,6 +32,11 @@ data class LoginState(
     val isLoading: Boolean = false,
     val error: String? = null
 )
+data class ImageState(
+    val imageData: ImageResponse? = null,
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
 
 class ItemsViewModel(
     private val itemsRepo: ItemRepository,
@@ -38,6 +44,10 @@ class ItemsViewModel(
 
     private val _state = MutableStateFlow(ItemsState())
     val state: StateFlow<ItemsState> = _state
+
+    private val _stateImage = MutableStateFlow(ImageState())
+    val stateImage: StateFlow<ImageState> = _stateImage
+
 
     private val _stateRecipes = MutableStateFlow(RecipesState())
     val stateRecipes: StateFlow<RecipesState> = _stateRecipes
@@ -73,7 +83,6 @@ class ItemsViewModel(
             _stateRecipes.value = _stateRecipes.value.copy(isLoading = true)
             try {
                 val result = itemsRepo.getRecipesData()
-                println(result)
                 _stateRecipes.value = _stateRecipes.value.copy(recipesData = result, isLoading = false)
             } catch (e: Exception) {
                 _stateRecipes.value = _stateRecipes.value.copy(isLoading = false, error = e.message)
@@ -83,7 +92,7 @@ class ItemsViewModel(
     }
 
     @Suppress("SuspiciousIndentation")
-    fun loginUser(loginRequest: LoginRequest): StateFlow<LoginState>{
+    fun loginUser(loginRequest: LoginRequest){
 
         viewModelScope.launch {
             _stateLogin.value = _stateLogin.value.copy(isLoading = true)
@@ -96,7 +105,22 @@ class ItemsViewModel(
                 println(e.message)
             }
         }
-        return stateLogin
+    }
+
+    @Suppress("SuspiciousIndentation")
+    fun uploadImage(image: ByteArray?, fileName: String){
+        viewModelScope.launch {
+            _stateImage.value = _stateImage.value.copy(isLoading = true)
+            try {
+                val result = itemsRepo.uploadImage(image!!, fileName)
+                println(result)
+                _stateImage.value = _stateImage.value.copy(imageData = result, isLoading = false)
+                } catch (e: Exception) {
+                _stateImage.value = _stateImage.value.copy(isLoading = false, error = e.message)
+
+                    println(e.message)
+            }
+        }
     }
 
     private var selectedCategory: Recipe? = null

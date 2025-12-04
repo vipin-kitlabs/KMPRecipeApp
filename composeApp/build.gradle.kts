@@ -49,6 +49,7 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
 
+            implementation("org.jetbrains.skiko:skiko:0.9.37.3")
 
 
             // ✅ Ktor + Serialization (Multiplatform)

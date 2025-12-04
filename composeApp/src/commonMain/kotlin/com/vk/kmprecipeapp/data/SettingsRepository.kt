@@ -49,27 +49,6 @@ class SettingsRepository(private val settings: Settings) {
 
     }
 
-    fun saveImage(key: String, imageBitmap: ImageBitmap?) {
-      val byteArray = imageBitmap!!.toByteArray()
-        val base64String = byteArray!!.encodeBase64()
-        settings.putString(key, base64String)
-    }
-
-    fun getImage(key: String): ImageBitmap? {
-        val base64String = settings.getString(key, "")
-        if (base64String.isNotEmpty()) {
-            val byteArray = base64String.decodeBase64()
-            return byteArray.toImageBitmap()
-        }
-        return null
-
-
-    }
-
-
-    private fun ByteString?.toImageBitmap(): ImageBitmap? {
-        return ImageBitmap(1, 1)
-    }
 
 
     fun clear() {

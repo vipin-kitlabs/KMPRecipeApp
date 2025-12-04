@@ -38,7 +38,7 @@ fun AppScreen(viewModelPer: PermissionViewModel = getKoin().get()) {
             ItemDetailsScreen(viewModel,navController)
         }
         composable("profile"){
-            ProfileScreen(navController)
+            ProfileScreen(navController,viewModel)
         }
 
 
